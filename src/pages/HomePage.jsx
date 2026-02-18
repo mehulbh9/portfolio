@@ -1,5 +1,7 @@
 import { motion } from 'framer-motion'
 import Hero from '../components/Hero'
+import StatsSection from '../components/StatsSection'
+import ValueProp from '../components/ValueProp'
 import Experience from '../components/Experience'
 import Skills from '../components/Skills'
 import Projects from '../components/Projects'
@@ -15,8 +17,10 @@ const HomePage = () => {
       transition={{ duration: 0.5 }}
     >
       <Hero />
-      <Experience />
+      <StatsSection />
+      <ValueProp />
       <Skills />
+      <Experience />
       <Projects />
       <Achievements />
       <Contact />

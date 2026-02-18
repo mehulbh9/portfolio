@@ -26,16 +26,16 @@ const Footer = () => {
   const currentYear = new Date().getFullYear()
   
   return (
-    <footer className="bg-dark text-white py-16">
+    <footer className="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white py-16">
       <div className="container">
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
           <div className="col-span-1">
-            <Link to="/" className="text-2xl font-bold mb-4 inline-block hover:text-primary transition-colors">
+            <Link to="/" className="text-2xl font-bold mb-4 inline-block text-white hover:text-primary transition-colors">
               Mehul Bhardwaj
             </Link>
-            <p className="text-gray-300 mb-6 max-w-xs">
-              Engineering Science Machine Learning Student at University of Toronto with experience in 
-              AI, data science, and supply chain management.
+            <p className="text-gray-300 mb-6 max-w-xs text-sm">
+              Data Science + AI + Program Management. Data Analyst at AMD | UofT Engineering Science (ML). 
+              Technical depth to build, execution chops to ship.
             </p>
             <div className="flex space-x-4">
               {socialLinks.map((link, index) => (

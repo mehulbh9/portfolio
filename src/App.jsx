@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react'
 import { HashRouter as Router, Routes, Route } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
+import Lenis from 'lenis'
 
 // Import components
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
+import Chatbot from './components/Chatbot'
 
 // Import pages
 import HomePage from './pages/HomePage'
@@ -22,6 +24,21 @@ function App() {
     }, 1000)
     
     return () => clearTimeout(timer)
+  }, [])
+
+  // Lenis smooth scroll (like nareshkhatri.site)
+  useEffect(() => {
+    const lenis = new Lenis({
+      duration: 1.2,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      smoothWheel: true,
+    })
+    function raf(time) {
+      lenis.raf(time)
+      requestAnimationFrame(raf)
+    }
+    requestAnimationFrame(raf)
+    return () => lenis.destroy()
   }, [])
 
   if (loading) {
@@ -54,6 +71,7 @@ function App() {
           </AnimatePresence>
         </main>
         <Footer />
+        <Chatbot />
       </div>
     </Router>
   )

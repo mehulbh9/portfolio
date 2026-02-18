@@ -40,7 +40,7 @@ const ResumePage = () => {
       exit={{ opacity: 0 }}
       transition={{ duration: 0.5 }}
     >
-      <section className="pt-28 pb-10 bg-primary/5">
+      <section className="pt-28 pb-10 bg-slate-900">
         <div className="container">
           <motion.div
             initial={{ y: -20, opacity: 0 }}
@@ -48,8 +48,9 @@ const ResumePage = () => {
             transition={{ duration: 0.5 }}
             className="text-center"
           >
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">My Resume</h1>
-            <p className="text-gray-600 max-w-2xl mx-auto mb-6">
+            <p className="section-label text-primary mb-2">Resume</p>
+            <h1 className="text-4xl md:text-5xl font-display font-bold mb-4 text-white">My Resume</h1>
+            <p className="text-slate-300 max-w-2xl mx-auto mb-6">
               A summary of my educational background, professional experiences, and technical skills.
             </p>
             <a href="/2025_CV_MEHUL.pdf" download className="btn btn-primary inline-flex items-center">
@@ -59,17 +60,17 @@ const ResumePage = () => {
         </div>
       </section>
       
-      <section className="section" id="education">
+      <section className="section bg-white" id="education">
         <div className="container">
-          <motion.h2 
-            className="section-title"
-            initial={{ opacity: 0, y: -20 }}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
+            transition={{ duration: 0.6 }}
           >
-            Education
-          </motion.h2>
+            <p className="section-label text-primary">Overview</p>
+            <h2 className="section-title text-left text-white">Education</h2>
+          </motion.div>
           
           <motion.div
             className="max-w-3xl mx-auto mt-12"
@@ -99,7 +100,7 @@ const ResumePage = () => {
                         {edu.period}
                       </div>
                     </div>
-                    <p className="text-gray-600">{edu.description}</p>
+                    <p className="text-slate-300">{edu.description}</p>
                   </div>
                 </div>
               </motion.div>

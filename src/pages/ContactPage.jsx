@@ -9,7 +9,7 @@ const ContactPage = () => {
       exit={{ opacity: 0 }}
       transition={{ duration: 0.5 }}
     >
-      <section className="pt-28 pb-10 bg-primary/5">
+      <section className="pt-28 pb-10 bg-slate-900">
         <div className="container">
           <motion.div
             initial={{ y: -20, opacity: 0 }}
@@ -17,8 +17,8 @@ const ContactPage = () => {
             transition={{ duration: 0.5 }}
             className="text-center"
           >
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">Contact Me</h1>
-            <p className="text-gray-600 max-w-2xl mx-auto">
+            <h1 className="text-4xl md:text-5xl font-bold mb-4 text-white">Contact Me</h1>
+            <p className="text-slate-300 max-w-2xl mx-auto">
               Have a question or want to work together? Feel free to reach out to me 
               using the contact form below.
             </p>
@@ -41,7 +41,7 @@ const ContactPage = () => {
               Let's Connect and Build Something Amazing Together
             </motion.h2>
             <motion.p
-              className="text-gray-600"
+              className="text-slate-300"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}

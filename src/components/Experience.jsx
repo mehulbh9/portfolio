@@ -1,18 +1,12 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { FiChevronRight, FiCalendar, FiMapPin, FiBriefcase, FiBook, FiCheckCircle, FiMoreHorizontal, FiCamera } from 'react-icons/fi'
-
-// Base64 encoded SVG logos
-const logoGEI = "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAwIDEwMDAiPjxwYXRoIGQ9Ik01MDAgMTAwYTQwMCA0MDAgMCAxIDAgMCA4MDAgNDAwIDQwMCAwIDAgMCAwLTgwMHptLTExNyA1NjFjMCAyMy0xOSA0Mi00MiA0MkgyNjFhNDIgNDIgMCAwIDEtNDItNDJWMzM5YzAtMjMgMTktNDIgNDItNDJoODBjMjMgMCA0MiAxOSA0MiA0MnYzMjJ6bTMyMC0xNjNINDkyYy0yMyAwLTQyLTE5LTQyLTQydi04MGMwLTIzIDE5LTQyIDQyLTQyaDE3MWEzMyAzMyAwIDAgMCAzMy0zM3YtMTkuNWEzMyAzMyAwIDAgMC0zMy0zM0g0MjBjLTIzIDAtNDIgMTktNDIgNDJWNDUyYzAgMjMgMTkgNDIgNDIgNDJoMjgzYzIzIDAgNDIgMTkgNDIgNDJ2NDJhNDIgNDIgMCAwIDEtNDIgNDJIMzgwYy0yMyAwLTQyLTE5LTQyLTQydi04YTggOCAwIDAgMC04LTh2MTZjMCAzMiAyNiA1OCA1OCA1OGgzMjVjMzIgMCA1OC0yNiA1OC01OHYtNDJjMC0zMi0yNi01OC01OC01OHoiIGZpbGw9IiMwMDViOWUiLz48L3N2Zz4=";
-
-const logoSEDS = "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAwIDEwMDAiPjxjaXJjbGUgY3g9IjUwMCIgY3k9IjUwMCIgcj0iNDUwIiBmaWxsPSIjMDA3NmRlIi8+PGNpcmNsZSBjeD0iNTAwIiBjeT0iNTAwIiByPSI0MDAiIGZpbGw9IiNmZmYiLz48cGF0aCBkPSJNNTAwIDEzMGE2MC42IDYwLjYgMCAwIDAtNjAuNiA2MC43IDYwLjYgNjAuNiAwIDAgMCA2MC42IDYwLjcgNjAuNiA2MC42IDAgMCAwIDYwLjctNjAuN0E2MC42IDYwLjYgMCAwIDAgNTAwIDEzMHptMCA0ODYuM2E2MC42IDYwLjYgMCAwIDAtNjAuNiA2MC43IDYwLjYgNjAuNiAwIDAgMCA2MC42IDYwLjcgNjAuNiA2MC42IDAgMCAwIDYwLjctNjAuN3pNMzQ3LjUgMjQzLjZhNjAuNiA2MC42IDAgMCAwLTYwLjcgNjAuNiA2MC42IDYwLjYgMCAwIDAgNjAuNyA2MC43IDYwLjYgNjAuNiAwIDAgMCA2MC42LTYwLjcgNjAuNiA2MC42IDAgMCAwLTYwLjYtNjAuNnoiIGZpbGw9IiMwMDc2ZGUiLz48cGF0aCBkPSJNNjM3LjggNTM1LjZjMCA2LjgtNS41IDEyLjItMTIuMiAxMi4ySDQ0OWMtNzMgMC0xMzIuOS01OS42LTEzMi45LTEzMi44di0yNC44YzAtNi43LTUuNS0xMi4yLTEyLjItMTIuMmgtNS4xYy02LjcgMC0xMi4yIDUuNS0xMi4yIDEyLjJ2MjQuOGMwIDk5LjkgODEuMyAxODEuMiAxODEuMyAxODEuMmgxOTQuNGM2LjcgMCAxMi4yLTUuNSAxMi4yLTEyLjJ2LTI0LjN6IiBmaWxsPSIjMDA3NmRlIi8+PC9zdmc+";
+import { FiBriefcase, FiBook, FiCheckCircle, FiMoreHorizontal, FiCamera } from 'react-icons/fi'
 
 const Experience = () => {
   const [activeTab, setActiveTab] = useState('work')
   const [isAnimating, setIsAnimating] = useState(false)
   const [expandedCourses, setExpandedCourses] = useState({})
   
-  // Handle tab switching with animation control
   const handleTabChange = (tab) => {
     if (!isAnimating && tab !== activeTab) {
       setIsAnimating(true)
@@ -21,11 +15,7 @@ const Experience = () => {
   }
   
   useEffect(() => {
-    // Animation complete
-    const timer = setTimeout(() => {
-      setIsAnimating(false)
-    }, 500)
-    
+    const timer = setTimeout(() => setIsAnimating(false), 500)
     return () => clearTimeout(timer)
   }, [activeTab])
   
@@ -36,33 +26,17 @@ const Experience = () => {
       degree: "Bachelor of Applied Science (BASc) in Engineering Science, Machine Intelligence Major",
       date: "2020 - 2025",
       description: [
-        "Completed the most rigorous and prestigious engineering program in Canada, ranked #1 at UofT and widely recognized as one of the most challenging undergraduate engineering programs globally (top 25 in the world, 7th in AI).",
-        "Specialized in Machine Intelligence major in years 3 & 4, focusing on deep learning, neural networks, and AI systems design in UofT's world-class AI ecosystem.",
-        "Core curriculum included advanced mathematics (vector calculus, ODE, linear algebra), algorithms, quantum and thermal physics, fluid mechanics, and electrical systems with a distinct first-principles approach.",
-        "Machine Intelligence specialization included neural networks, machine learning, probabilistic reasoning, AI systems, decision support systems and advanced technical electives.",
-        "Completed a research-based thesis project on advanced neural network architectures, mandatory for all Engineering Science students.",
-        "Participated in Engineering Science Option Seminar focusing on cutting-edge research in machine learning and AI applications.",
-        "Completed the Practical Experience Requirement (PER) through industry experience in the AI and high-performance computing sector.",
-        "Maintained academic excellence in an elite cohort with course load and curriculum specifically designed at a more academically demanding level than standard engineering programs."
+        "Completed the most rigorous and prestigious engineering program in Canada, ranked #1 at UofT.",
+        "Specialized in Machine Intelligence major in years 3 & 4, focusing on deep learning, neural networks, and AI systems design.",
       ],
       highlights: [
-        "Program designed with unique '2+2' structure: foundation years followed by specialization",
-        "Curriculum includes more mathematics, science and engineering with first-principles approach",
-        "All students complete independent research-based thesis projects",
-        "Machine Intelligence curriculum covers foundations of AI, ML, neural networks and advanced systems",
-        "Specialized course sequence: Machine Learning, Neural Networks, Probabilistic Reasoning, AI Systems",
-        "Technical electives in Natural Language Computing, Computer Vision, Knowledge Representation"
+        "Machine Learning", "Neural Networks", "Probabilistic Reasoning", "AI Systems", "Research Thesis"
       ],
       courses: [
         "ECE421H1: Introduction to Machine Learning",
         "ECE324H1: Machine Intelligence, Software and Neural Networks",
         "ROB311H1: Artificial Intelligence",
         "ECE368H1: Probabilistic Reasoning",
-        "MIE429H1: Machine Intelligence Capstone Design",
-        "MIE451H1: Decision Support Systems",
-        "ECE355H1: Signal Analysis and Communication",
-        "ECE411H1: Adaptive Control and Reinforcement Learning",
-        "CSC401H1: Natural Language Computing",
         "CSC413H1: Neural Networks & Deep Learning",
         "ESC499Y1: Engineering Science Thesis"
       ],
@@ -72,16 +46,35 @@ const Experience = () => {
   
   const work = [
     {
+      id: "amd-data-analyst",
+      company: "Advanced Micro Devices (AMD)",
+      title: "Data Analyst – Automation & Program Analytics",
+      date: "Jul 2025 – Present",
+      location: "Toronto, Canada",
+      type: "Full Time",
+      skills: ["Python", "ETL", "Monte Carlo", "Jira", "Confluence", "Predictive Modeling", "Dashboards"],
+      highlights: [
+        "Python automation pipelines for task classification and ETL workflows",
+        "Monte Carlo simulations & velocity-based forecasting for schedule risk",
+        "Jira dashboards tracking 200+ builds across data center programs",
+        "Confluence documentation for KPIs and analytical insights",
+        "Weekly analytical reports for leadership decision-making"
+      ],
+      logo: "/logos/AMD_logo.png"
+    },
+    {
       id: "amd-data-scientist",
       company: "Advanced Micro Devices (AMD)",
       title: "Data Scientist Intern",
       date: "May 2024 - Sept 2024",
-      subtitle: "Data Analytics & Process Optimization",
-      description: [
-        "Leveraged cutting-edge Python libraries for advanced data wrangling, ETL, and Big Data processing—filtering a massive 500+ column, 300M+ row dataset to drive scalable analytics.",
-        "Engineered key features and organized cloud data from Snowflake into 10 specialized datasets using Pandas, enhancing data quality for EDA.",
-        "Leveraged correlation analysis, SHAP values, and hypothesis testing—to engineer XGBoost based predictive model achieving 92% accuracy and fueling data-driven decision-making.",
-        "Designed an anomaly detection pipeline employing interactive data visualization and k-means clustering to identify 5 critical variables impacting performance."
+      location: "Toronto, Canada",
+      type: "Internship",
+      skills: ["Python", "Snowflake", "XGBoost", "SHAP", "Pandas", "Big Data", "K-means"],
+      highlights: [
+        "Processed 300M+ row, 500+ column dataset for scalable analytics",
+        "Built XGBoost model with SHAP interpretability on 300M+ row datasets",
+        "Engineered 10 specialized datasets from Snowflake cloud data",
+        "Anomaly detection pipeline with k-means clustering"
       ],
       logo: "/logos/AMD_logo.png"
     },
@@ -90,11 +83,13 @@ const Experience = () => {
       company: "Advanced Micro Devices (AMD)",
       title: "Project Manager Intern",
       date: "May 2023 - Sept 2024",
-      subtitle: "Supply Chain Management & Dashboard Development",
-      description: [
-        "Streamlined workflow documentation, including detailed flowcharts for process visualization and Gantt charts for timeline tracking, streamlining the onboarding of 10+ new team members.",
-        "Developed Python scripts to reduce processing time from over 10 minutes to under 5 seconds, achieving automated data processing and minimizing manual errors.",
-        "Deployed an interactive real-time supply-demand analysis dashboard, optimizing tracking for 200+ NPI builds across multiple data center programs."
+      location: "Toronto, Canada",
+      type: "Internship",
+      skills: ["Python", "Supply Chain", "Dashboards", "Gantt Charts", "Process Automation"],
+      highlights: [
+        "Reduced data processing time from 10+ minutes to under 5 seconds with Python automation",
+        "Deployed real-time supply-demand dashboard for 200+ NPI builds",
+        "Streamlined onboarding for 10+ team members with workflow documentation"
       ],
       logo: "/logos/AMD_logo.png"
     },
@@ -103,11 +98,13 @@ const Experience = () => {
       company: "University of Toronto",
       title: "Undergraduate Research Assistant",
       date: "Sept 2024 - Present",
-      subtitle: "Gaussian Process Regression for Li2S Manufacturing",
-      description: [
-        "Developed a Gaussian Process Regression (GPR) model with Active Learning to optimize lithium sulfide manufacturing and reduce experimental costs.",
-        "Designed interactive 3D visualizations to map uncertainty and guide Bayesian Optimization using acquisition functions like Expected Improvement.",
-        "Applied imputation, uncertainty-aware modeling, and feature engineering in a low-data regime with significant missing values."
+      location: "Toronto, Canada",
+      type: "Research",
+      skills: ["Gaussian Process", "Bayesian Optimization", "Active Learning", "Python", "3D Visualization"],
+      highlights: [
+        "GPR model with Active Learning for lithium sulfide manufacturing optimization",
+        "Interactive 3D visualizations for Bayesian Optimization",
+        "Imputation and feature engineering in low-data regime"
       ],
       logo: "/logos/uoft_logo.png"
     },
@@ -116,11 +113,13 @@ const Experience = () => {
       company: "GEI Consultants Inc.",
       title: "AI/ML Engineer - Capstone Project",
       date: "Sept 2024 - Feb 2025",
-      subtitle: "RFP Response System Development",
-      description: [
-        "Developed an AI-driven RFP response system using Large Language Models (LLMs) via the OpenAI API to streamline proposal generation.",
-        "Implemented Retrieval-Augmented Generation (RAG) with Hugging Face embeddings to enhance document relevance across 200+ documents.",
-        "Developed custom Python functions to prevent hallucinations by retrieving only relevant documents with verifiable references, using similarity-based retrieval to enhance accuracy and contextual relevance."
+      location: "Toronto, Canada",
+      type: "Capstone",
+      skills: ["LLMs", "OpenAI API", "RAG", "Hugging Face", "Python"],
+      highlights: [
+        "AI-driven RFP response system using LLMs via OpenAI API",
+        "RAG implementation with Hugging Face embeddings across 200+ documents",
+        "Custom retrieval functions to prevent hallucinations"
       ],
       logo: "/logos/GEI_logo.png"
     },
@@ -128,264 +127,197 @@ const Experience = () => {
       id: "photography",
       company: "Instagram @photography_mehul",
       title: "Photography Content Creator",
-      date: "",
-      subtitle: "",
-      description: [
-        "Nature lover capturing the beauty of wildlife and landscapes through photography."
-      ],
+      date: "Ongoing",
+      location: "",
+      type: "",
+      skills: [],
+      highlights: ["Nature and wildlife photography", "Landscape photography"],
       logo: ""
     }
   ]
   
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.05
-      }
-    },
-    exit: {
-      opacity: 0,
-      transition: {
-        duration: 0.2
-      }
-    }
-  }
-  
-  const itemVariants = {
-    hidden: { y: 20, opacity: 0 },
-    visible: {
-      y: 0,
-      opacity: 1,
-      transition: { duration: 0.3 }
-    }
+  const cardVariants = {
+    hidden: { opacity: 0, y: 40 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] } },
   }
   
   const tabContentVariants = {
-    hidden: { opacity: 0, y: 10 },
-    visible: { 
-      opacity: 1, 
-      y: 0,
-      transition: { duration: 0.3 }
-    },
-    exit: { 
-      opacity: 0, 
-      y: -10,
-      transition: { duration: 0.2 }
-    }
+    hidden: { opacity: 0 },
+    visible: { opacity: 1, transition: { duration: 0.3 } },
+    exit: { opacity: 0, transition: { duration: 0.2 } }
   }
-  
-  // Helper to render work items in timeline format
+
   const WorkItems = () => (
-    <div className="relative py-8">
-      <h2 className="text-3xl font-bold text-center mb-4">Experience Timeline</h2>
-      <div className="border-b-4 border-primary w-24 mx-auto mb-16"></div>
-
-      {/* Timeline line - centered */}
-      <div className="absolute left-1/2 top-32 bottom-4 w-1 bg-blue-500 transform -translate-x-1/2"></div>
-      
-      {/* Timeline items */}
-      <div className="relative">
-        {work.map((job, index) => (
-          <motion.div 
-            key={job.id}
-            variants={itemVariants}
-            className="mb-32 relative"
-          >
-            {/* Timeline dot with date label */}
-            <div className="absolute left-1/2 transform -translate-x-1/2 z-10">
-              <div className="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center">
-                {index === 0 && <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-20"></span>}
+    <div className="space-y-8">
+      {work.map((job, index) => (
+        <motion.div
+          key={job.id}
+          variants={cardVariants}
+          initial="hidden"
+          animate="visible"
+          className="bg-slate-800/60 rounded-2xl p-6 md:p-8 border border-slate-600/50 shadow-sm hover:shadow-md hover:border-slate-500 transition-all duration-300"
+        >
+          <div className="flex flex-col gap-6">
+            {/* Header row */}
+            <div className="flex flex-col sm:flex-row sm:items-start gap-4">
+              <div className="w-14 h-14 rounded-xl bg-primary/5 flex items-center justify-center flex-shrink-0 border border-primary/10">
+                {job.logo ? (
+                  <img src={job.logo} alt={job.company} className="w-10 h-10 object-contain" />
+                ) : (
+                  <FiCamera size={24} className="text-primary" />
+                )}
               </div>
-              {/* Date label - position it to the left or right side based on card position */}
-              <div className={`absolute top-0 bg-blue-500 text-white text-sm font-medium py-1 px-4 rounded-md shadow-sm text-center whitespace-nowrap ${index % 2 === 0 ? 'right-full mr-4' : 'left-full ml-4'}`}>
-                {job.date}
-              </div>
-            </div>
-
-            {/* Content card - alternating sides with more spacing */}
-            <div className={`w-[42%] ${index % 2 === 0 ? 'ml-auto mr-[8%]' : 'mr-auto ml-[8%]'}`}>
-              <div className="bg-blue-50 rounded-2xl p-6 shadow-sm">
-                <div className="flex items-start">
-                  {/* Logo - larger */}
-                  <div className="w-16 h-16 bg-white rounded-lg flex-shrink-0 flex items-center justify-center overflow-hidden mr-4 border border-gray-200 p-1">
-                    {job.logo ? (
-                      <img 
-                        src={job.logo} 
-                        alt={job.company} 
-                        className="max-w-[90%] max-h-[90%] object-contain" 
-                      />
-                    ) : (
-                      job.id === "photography" ? (
-                        <FiCamera size={30} className="text-primary" />
-                      ) : (
-                        <FiBriefcase size={30} className="text-primary" />
-                      )
-                    )}
-                  </div>
-                  
-                  {/* Content */}
-                  <div className="flex-1">
-                    <a href="#" className="text-blue-500 font-bold hover:underline">{job.company}</a>
-                    <h3 className="text-xl font-bold text-gray-800 mt-1">{job.title}</h3>
-                    
-                    {job.subtitle && (
-                      <div className="text-gray-600 text-sm mt-1">
-                        {job.subtitle}
-                      </div>
-                    )}
-                    
-                    <div className="mt-4">
-                      <p className="text-gray-700 text-sm leading-relaxed">
-                        {job.description[0]}
-                      </p>
-                      
-                      {job.description.length > 1 && (
-                        <ul className="mt-3 space-y-2">
-                          {job.description.slice(1).map((item, idx) => (
-                            <li key={idx} className="text-gray-700 text-sm flex items-start">
-                              <span className="mr-2 text-gray-500 font-semibold">–</span>
-                              <span>{item}</span>
-                            </li>
-                          ))}
-                        </ul>
-                      )}
-                    </div>
-                  </div>
+              <div className="flex-1 min-w-0">
+                <div className="flex flex-wrap items-center gap-2 mb-1">
+                  <span className="text-primary font-bold text-lg">{job.company}</span>
+                  {job.location && (
+                    <span className="text-slate-400 text-sm">· {job.location}</span>
+                  )}
+                </div>
+                <h3 className="text-xl font-bold text-white">{job.title}</h3>
+                <div className="flex flex-wrap items-center gap-3 mt-2">
+                  <span className="text-sm font-medium text-slate-400">{job.date}</span>
+                  {job.type && (
+                    <span className="text-xs px-3 py-1 rounded-full bg-primary text-white font-medium">
+                      {job.type}
+                    </span>
+                  )}
                 </div>
               </div>
             </div>
-          </motion.div>
-        ))}
-      </div>
+
+            {/* Skills/Tech stack - recruiter scan-friendly */}
+            {job.skills && job.skills.length > 0 && (
+              <div>
+                <h4 className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Technologies & Skills</h4>
+                <div className="flex flex-wrap gap-2">
+                  {job.skills.map((skill, idx) => (
+                    <span
+                      key={idx}
+                      className="text-sm px-3 py-1.5 rounded-lg bg-primary/20 text-primary font-medium"
+                    >
+                      {skill}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Key achievements */}
+            <div>
+                <h4 className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3">Key Achievements</h4>
+              <ul className="space-y-2">
+                {job.highlights.map((item, idx) => (
+                  <li key={idx} className="flex items-start text-slate-300 text-sm md:text-base">
+                    <FiCheckCircle className="text-primary mt-1 mr-2 flex-shrink-0" size={18} />
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </motion.div>
+      ))}
     </div>
   )
   
-  // Helper to render education items with general format (not timeline)
   const EducationItems = () => (
-    <div className="py-8">
-      <h2 className="text-3xl font-bold text-center mb-4">Education</h2>
-      <div className="border-b-4 border-primary w-24 mx-auto mb-16"></div>
-      
-      {/* Education items in general format */}
-      <div className="max-w-4xl mx-auto">
-        {education.map((edu) => (
-          <motion.div 
-            key={edu.id}
-            variants={itemVariants}
-            className="mb-12"
-          >
-            <div className="bg-blue-50 rounded-2xl p-8 shadow-sm">
-              <div className="flex flex-col md:flex-row md:items-start gap-6">
-                {/* Logo and basic info */}
-                <div className="flex flex-col items-center md:items-start">
-                  <div className="w-24 h-24 bg-white rounded-lg flex items-center justify-center overflow-hidden border border-gray-200 p-2 mb-3">
-                    {edu.logo ? (
-                      <img 
-                        src={edu.logo} 
-                        alt={edu.institution}
-                        className="max-w-[90%] max-h-[90%] object-contain" 
-                      />
-                    ) : (
-                      <FiBook size={40} className="text-primary" />
-                    )}
-                  </div>
-                  <div className="px-4 py-2 bg-blue-500 text-white text-sm font-medium rounded-full mb-2 text-center">
-                    {edu.date}
-                  </div>
-                </div>
-                
-                {/* Content */}
-                <div className="flex-1">
-                  <a href="#" className="text-blue-500 text-xl font-bold hover:underline">{edu.institution}</a>
-                  <h3 className="text-2xl font-bold text-gray-800 mt-1">{edu.degree}</h3>
-                  
-                  <div className="mt-4">
-                    <p className="text-gray-700 text-base leading-relaxed">
-                      {edu.description[0]}
-                    </p>
-                    
-                    {edu.description.length > 1 && (
-                      <div className="mt-4 border-l-4 border-blue-200 pl-4">
-                        <p className="text-gray-700 text-base font-medium italic">
-                          {edu.description[1]}
-                        </p>
-                      </div>
-                    )}
-                    
-                    {/* Show highlights as tags */}
-                    {edu.highlights && (
-                      <div className="mt-6">
-                        <h4 className="text-lg font-semibold mb-3">Program Highlights</h4>
-                        <div className="flex flex-wrap gap-2">
-                          {edu.highlights.map((highlight, index) => (
-                            <span key={index} className="text-sm bg-blue-100 text-blue-700 px-3 py-1.5 rounded-full">
-                              {highlight.split(":")[0]}
-                            </span>
-                          ))}
-                        </div>
-                      </div>
-                    )}
-                    
-                    {/* Key courses section */}
-                    {edu.courses && (
-                      <div className="mt-6">
-                        <h4 className="text-lg font-semibold mb-3">Key Courses</h4>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-                          {edu.courses.slice(0, expandedCourses[edu.id] ? edu.courses.length : 6).map((course, index) => (
-                            <div key={index} className="flex items-center">
-                              <FiCheckCircle className="text-green-500 mr-2 flex-shrink-0" />
-                              <span className="text-sm text-gray-700">{course}</span>
-                            </div>
-                          ))}
-                        </div>
-                        {edu.courses.length > 6 && (
-                          <button 
-                            className="mt-3 text-blue-500 hover:text-blue-700 text-sm flex items-center"
-                            onClick={() => setExpandedCourses(prev => ({
-                              ...prev,
-                              [edu.id]: !prev[edu.id]
-                            }))}
-                          >
-                            <FiMoreHorizontal className="mr-1" /> 
-                            {expandedCourses[edu.id] ? "Show fewer courses" : "See more courses"}
-                          </button>
-                        )}
-                      </div>
-                    )}
-                  </div>
-                </div>
+    <div className="space-y-8">
+      {education.map((edu) => (
+        <motion.div
+          key={edu.id}
+          variants={cardVariants}
+          initial="hidden"
+          animate="visible"
+          className="bg-slate-800/60 rounded-2xl p-6 md:p-8 border border-slate-600/50 shadow-sm hover:shadow-md hover:border-slate-500 transition-all duration-300"
+        >
+          <div className="flex flex-col gap-6">
+            <div className="flex flex-col sm:flex-row sm:items-start gap-4">
+              <div className="w-14 h-14 rounded-xl bg-primary/5 flex items-center justify-center flex-shrink-0 border border-primary/10">
+                {edu.logo ? (
+                  <img src={edu.logo} alt={edu.institution} className="w-10 h-10 object-contain" />
+                ) : (
+                  <FiBook size={24} className="text-primary" />
+                )}
+              </div>
+              <div className="flex-1 min-w-0">
+                <span className="text-primary font-bold text-lg">{edu.institution}</span>
+                <span className="text-slate-400 text-sm ml-2">{edu.date}</span>
+                <h3 className="text-xl font-bold text-white mt-1">{edu.degree}</h3>
               </div>
             </div>
-          </motion.div>
-        ))}
-      </div>
+            <div className="space-y-2">
+              {edu.description.map((p, i) => (
+                <p key={i} className="text-slate-300 text-sm md:text-base">{p}</p>
+              ))}
+            </div>
+            {edu.highlights && (
+              <div>
+                <h4 className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Focus Areas</h4>
+                <div className="flex flex-wrap gap-2">
+                  {edu.highlights.map((h, i) => (
+                    <span key={i} className="text-sm px-3 py-1.5 rounded-lg bg-primary/20 text-primary font-medium">
+                      {h}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
+            {edu.courses && (
+              <div>
+                <h4 className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Key Courses</h4>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                  {edu.courses.slice(0, expandedCourses[edu.id] ? edu.courses.length : 6).map((c, i) => (
+                    <div key={i} className="flex items-center text-sm text-slate-300">
+                      <FiCheckCircle className="text-primary mr-2 flex-shrink-0" size={14} />
+                      {c}
+                    </div>
+                  ))}
+                </div>
+                {edu.courses.length > 6 && (
+                  <button
+                    onClick={() => setExpandedCourses(prev => ({ ...prev, [edu.id]: !prev[edu.id] }))}
+                    className="mt-2 text-sm text-primary hover:text-primary/80 font-medium flex items-center"
+                  >
+                    <FiMoreHorizontal className="mr-1" />
+                    {expandedCourses[edu.id] ? "Show fewer" : "See more courses"}
+                  </button>
+                )}
+              </div>
+            )}
+          </div>
+        </motion.div>
+      ))}
     </div>
   )
   
   return (
-    <section className="section" id="experience">
+    <section className="section bg-gradient-to-b from-slate-800 via-slate-900 to-cyan-950/20" id="experience">
       <div className="container">
-        <motion.h2 
-          className="section-title"
-          initial={{ opacity: 0, y: -20 }}
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
+          viewport={{ once: true, margin: '-50px' }}
+          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
         >
-          Education & Experience
-        </motion.h2>
+          <p className="section-label text-primary">Background</p>
+          <h2 className="section-title text-left text-white">
+            Education & Experience
+          </h2>
+          <p className="text-slate-300 mt-2 max-w-2xl">
+            Data science, AI, and program management—delivering impact across the full stack.
+          </p>
+        </motion.div>
         
-        <div className="flex justify-center mb-10 mt-8">
-          <div className="inline-flex rounded-md shadow-sm" role="group">
+        <div className="flex justify-center mb-12 mt-10">
+          <div className="inline-flex flex-wrap justify-center gap-1 rounded-lg border-2 border-slate-600 bg-slate-800/50 p-1 touch-manipulation">
             <button
               type="button"
-              className={`px-5 py-2.5 text-sm font-medium ${
+              className={`px-5 py-2.5 text-sm font-medium rounded-md transition-colors flex items-center ${
                 activeTab === 'work'
                   ? 'bg-primary text-white'
-                  : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-              } rounded-l-lg transition-colors flex items-center`}
+                  : 'text-slate-300 hover:text-white'
+              }`}
               onClick={() => handleTabChange('work')}
               disabled={isAnimating}
             >
@@ -393,11 +325,11 @@ const Experience = () => {
             </button>
             <button
               type="button"
-              className={`px-5 py-2.5 text-sm font-medium ${
+              className={`px-5 py-2.5 text-sm font-medium rounded-md transition-colors flex items-center ${
                 activeTab === 'education'
                   ? 'bg-primary text-white'
-                  : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-              } rounded-r-lg transition-colors flex items-center`}
+                  : 'text-slate-300 hover:text-white'
+              }`}
               onClick={() => handleTabChange('education')}
               disabled={isAnimating}
             >
@@ -406,7 +338,7 @@ const Experience = () => {
           </div>
         </div>
         
-        <div className="min-h-[500px]">
+        <div className="min-h-[400px]">
           <AnimatePresence mode="wait">
             <motion.div
               key={activeTab}
@@ -414,28 +346,9 @@ const Experience = () => {
               initial="hidden"
               animate="visible"
               exit="exit"
-              className="space-y-8"
             >
-              {activeTab === 'work' && (
-                <motion.div
-                  variants={containerVariants}
-                  initial="hidden"
-                  animate="visible"
-                >
-                  <WorkItems />
-                </motion.div>
-              )}
-              
-              {activeTab === 'education' && (
-                <motion.div
-                  variants={containerVariants}
-                  initial="hidden"
-                  animate="visible"
-                  className="space-y-8"
-                >
-                  <EducationItems />
-                </motion.div>
-              )}
+              {activeTab === 'work' && <WorkItems />}
+              {activeTab === 'education' && <EducationItems />}
             </motion.div>
           </AnimatePresence>
         </div>
@@ -444,4 +357,4 @@ const Experience = () => {
   )
 }
 
-export default Experience 
+export default Experience

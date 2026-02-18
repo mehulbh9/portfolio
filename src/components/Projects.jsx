@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
-import { FiGithub, FiCode, FiFilter, FiCpu, FiDatabase, FiServer, FiGlobe, FiChevronDown } from 'react-icons/fi'
+import { FiGithub, FiFilter, FiCpu, FiDatabase, FiServer, FiGlobe, FiChevronDown } from 'react-icons/fi'
+import TiltCard from './TiltCard'
 
 const Projects = () => {
   const [filter, setFilter] = useState('all')
@@ -176,33 +177,36 @@ const Projects = () => {
   }
   
   const itemVariants = {
-    hidden: { y: 20, opacity: 0 },
+    hidden: { y: 50, opacity: 0, scale: 0.98 },
     visible: {
       y: 0,
       opacity: 1,
-      transition: { duration: 0.5 }
+      scale: 1,
+      transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] }
     },
-    hover: {
-      y: -10,
-      transition: { duration: 0.2 }
-    }
   }
   
   return (
-    <section className="section" id="projects">
+    <section className="section bg-gradient-to-b from-slate-900 via-slate-800 to-cyan-950/20" id="projects">
       <div className="container">
-        <motion.h2 
-          className="section-title"
-          initial={{ opacity: 0, y: -20 }}
+        <motion.div
+          className="mb-12"
+          initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
+          viewport={{ once: true, margin: '-50px' }}
+          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
         >
-          Featured Projects
-        </motion.h2>
+          <p className="section-label text-primary">Selected Works</p>
+          <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
+            <h2 className="section-title text-left mb-0 text-white">
+              Featured Projects
+            </h2>
+            <span className="text-primary font-medium">2020–2025</span>
+          </div>
+        </motion.div>
         
         <motion.div
-          className="flex flex-wrap justify-center gap-3 mt-8 mb-12"
+          className="flex flex-wrap justify-center gap-2 sm:gap-3 mb-12 px-2 touch-manipulation"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -212,10 +216,10 @@ const Projects = () => {
             <button
               key={category.id}
               onClick={() => setFilter(category.id)}
-              className={`px-4 py-2 rounded-full flex items-center gap-2 transition-colors ${
+              className={`px-3 sm:px-4 py-2 rounded-full flex items-center gap-2 transition-colors text-sm sm:text-base touch-manipulation ${
                 filter === category.id
-                  ? 'bg-primary text-white'
-                  : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
+                  ? 'bg-cyan-500 text-slate-900'
+                  : 'bg-slate-700/50 hover:bg-cyan-500/20 text-slate-300 hover:text-cyan-300'
               }`}
             >
               {category.icon}
@@ -229,49 +233,35 @@ const Projects = () => {
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true }}
+          viewport={{ once: true, margin: '-40px' }}
         >
           {filteredProjects.map((project, index) => (
-            <motion.div
-              key={index}
-              className="bg-white rounded-xl overflow-hidden shadow-md relative flex flex-col h-full border border-gray-100"
-              variants={itemVariants}
-              whileHover="hover"
-              onMouseEnter={() => setHoveredProject(index)}
-              onMouseLeave={() => setHoveredProject(null)}
-            >
-              <div className="h-48 bg-gray-200 relative">
-                {/* Project image would go here */}
-                {/* <img src={project.image} alt={project.title} className="w-full h-full object-cover" /> */}
-                
-                {/* Placeholder if no image */}
-                <div className="w-full h-full flex items-center justify-center bg-gradient-to-r from-primary/20 to-accent/20">
-                  <FiCode size={40} className="text-primary" />
+            <motion.div key={index} variants={itemVariants} className="h-full">
+              <TiltCard max={10} scale={1.02} className="h-full">
+              <div
+                className="bg-slate-800/60 rounded-xl overflow-hidden shadow-lg relative flex flex-col h-full border border-slate-600/50 hover:shadow-xl hover:border-cyan-500/50 transition-all duration-300"
+                onMouseEnter={() => setHoveredProject(index)}
+                onMouseLeave={() => setHoveredProject(null)}
+              >
+                <div className={`p-5 flex-grow flex flex-col transition-all duration-300 ${hoveredProject === index ? 'bg-slate-700/30' : ''}`}>
+                <div className="flex items-start justify-between gap-3 mb-2">
+                  <h3 className="text-xl font-bold text-white">{project.title}</h3>
+                  {project.links.github !== '#' && (
+                    <a
+                      href={project.links.github}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex-shrink-0 p-2 rounded-lg text-slate-400 hover:text-cyan-400 hover:bg-cyan-500/10 transition-colors"
+                      aria-label="View GitHub"
+                    >
+                      <FiGithub size={20} />
+                    </a>
+                  )}
                 </div>
-                
-                <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-t from-dark/70 to-transparent opacity-0 hover:opacity-100 transition-opacity flex items-end">
-                  <div className="p-4 w-full flex justify-end space-x-3">
-                    {project.links.github !== '#' && (
-                      <a
-                        href={project.links.github}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-white bg-dark/50 p-2 rounded-full hover:bg-primary transition-colors"
-                        aria-label="View GitHub Repository"
-                      >
-                        <FiGithub size={18} />
-                      </a>
-                    )}
-                  </div>
-                </div>
-              </div>
-              
-              <div className={`p-5 flex-grow flex flex-col transition-all duration-300 ${hoveredProject === index ? 'bg-gray-50' : ''}`}>
-                <h3 className="text-xl font-bold mb-2">{project.title}</h3>
-                <p className={`text-gray-600 mb-4 ${hoveredProject === index ? '' : 'line-clamp-3'}`}>{project.description}</p>
+                <p className={`text-slate-300 mb-4 ${hoveredProject === index ? '' : 'line-clamp-3'}`}>{project.description}</p>
                 
                 <div className="mt-auto">
-                  <div className={`text-sm text-gray-700 mb-3 ${hoveredProject === index ? '' : 'line-clamp-2'}`}>
+                  <div className={`text-sm text-slate-400 mb-3 ${hoveredProject === index ? '' : 'line-clamp-2'}`}>
                     <p>{project.details}</p>
                   </div>
                   
@@ -279,14 +269,14 @@ const Projects = () => {
                     {(hoveredProject === index ? project.tags : project.tags.slice(0, 3)).map((tag, idx) => (
                       <span 
                         key={idx} 
-                        className="text-xs bg-primary/10 text-primary px-2 py-1 rounded-md"
+                        className="text-xs bg-cyan-500/20 text-cyan-300 px-2 py-1 rounded-md"
                       >
                         {tag}
                       </span>
                     ))}
                     {hoveredProject !== index && project.tags.length > 3 && (
                       <span 
-                        className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded-md flex items-center"
+                        className="text-xs bg-slate-600/50 text-slate-400 px-2 py-1 rounded-md flex items-center"
                       >
                         +{project.tags.length - 3} <FiChevronDown className="ml-1" />
                       </span>
@@ -303,7 +293,7 @@ const Projects = () => {
                         href={project.links.github} 
                         target="_blank" 
                         rel="noopener noreferrer"
-                        className="inline-flex items-center text-sm text-primary hover:text-primary-dark"
+                        className="inline-flex items-center text-sm text-cyan-400 hover:text-cyan-300"
                       >
                         <FiGithub className="mr-1" /> View on GitHub
                       </a>
@@ -311,6 +301,8 @@ const Projects = () => {
                   )}
                 </div>
               </div>
+              </div>
+              </TiltCard>
             </motion.div>
           ))}
         </motion.div>

@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion'
 import { FiAward, FiTrendingUp, FiStar, FiBarChart2, FiBookOpen, FiAward as FiTrophyIcon } from 'react-icons/fi'
+import TiltCard from './TiltCard'
 
 const Achievements = () => {
   const awards = [
@@ -77,19 +78,21 @@ const Achievements = () => {
   const additionalAwards = awards.slice(4)
   
   return (
-    <section className="section bg-gray-50" id="achievements">
+    <section className="section bg-gradient-to-b from-slate-800 via-slate-900 to-cyan-950/20" id="achievements">
       <div className="container">
-        <motion.h2 
-          className="section-title"
-          initial={{ opacity: 0, y: -20 }}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
+          transition={{ duration: 0.6 }}
         >
-          Achievements & Awards
-        </motion.h2>
+          <p className="section-label text-primary">Recognition</p>
+          <h2 className="section-title text-left text-white">
+            Achievements & Awards
+          </h2>
+        </motion.div>
         
-        <p className="text-gray-600 max-w-3xl mx-auto text-center mb-12">
+        <p className="text-slate-300 max-w-3xl mx-auto text-center mb-12">
           A collection of academic and professional achievements that demonstrate my commitment to excellence, 
           problem-solving abilities, and continuous learning throughout my educational journey.
         </p>
@@ -103,14 +106,11 @@ const Achievements = () => {
           viewport={{ once: true }}
         >
           {featuredAwards.map((award, index) => (
-            <motion.div
-              key={index}
-              className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 h-full flex flex-col"
-              variants={itemVariants}
-              whileHover={{ y: -5, boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.1)' }}
-            >
+            <motion.div key={index} variants={itemVariants} className="h-full">
+              <TiltCard max={8} scale={1.02} className="h-full">
+              <div className="bg-slate-800/60 rounded-xl p-6 shadow-lg border border-slate-600/50 h-full flex flex-col hover:shadow-xl hover:border-slate-500 transition-all duration-300">
               <div className="flex justify-between items-start mb-3">
-                <div className="w-12 h-12 rounded-full bg-gray-50 flex items-center justify-center">
+                <div className="w-12 h-12 rounded-full bg-slate-700/50 flex items-center justify-center">
                   {award.icon}
                 </div>
                 {award.year && (
@@ -119,15 +119,17 @@ const Achievements = () => {
                   </div>
                 )}
               </div>
-              <h3 className="text-xl font-bold mb-3">{award.title}</h3>
-              <p className="text-gray-600 text-sm flex-grow">{award.description}</p>
+              <h3 className="text-xl font-bold mb-3 text-white">{award.title}</h3>
+              <p className="text-slate-300 text-sm flex-grow">{award.description}</p>
+              </div>
+              </TiltCard>
             </motion.div>
           ))}
         </motion.div>
         
-        {/* Additional Awards in a compact table format */}
+        {/* Additional Awards in a compact card grid */}
         <motion.div
-          className="mt-12 bg-white rounded-xl p-8 shadow-sm border border-gray-100"
+          className="mt-12 bg-slate-800/60 rounded-xl p-4 md:p-8 shadow-lg border border-slate-600/50 overflow-x-auto"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -135,52 +137,33 @@ const Achievements = () => {
         >
           <div className="flex items-center gap-3 mb-6">
             <FiTrophyIcon size={24} className="text-primary" />
-            <h3 className="text-2xl font-bold">Additional Achievements</h3>
+            <h3 className="text-2xl font-bold text-white">Additional Achievements</h3>
           </div>
           
-          <div className="overflow-hidden rounded-lg border border-gray-100">
-            <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-gray-50">
-                <tr>
-                  <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Achievement
-                  </th>
-                  <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider hidden md:table-cell">
-                    Description
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
-                {additionalAwards.map((award, index) => (
-                  <motion.tr 
-                    key={index}
-                    initial={{ opacity: 0, y: 10 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: index * 0.1 }}
-                  >
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="flex items-center">
-                        <div className="flex-shrink-0 h-10 w-10 flex items-center justify-center">
-                          {award.icon}
-                        </div>
-                        <div className="ml-4">
-                          <div className="text-sm font-medium text-gray-900">{award.title}</div>
-                        </div>
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 hidden md:table-cell">
-                      <div className="text-sm text-gray-500">{award.description}</div>
-                    </td>
-                  </motion.tr>
-                ))}
-              </tbody>
-            </table>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {additionalAwards.map((award, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 10 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.08 }}
+                className="flex items-start gap-4 p-4 rounded-xl bg-slate-700/40 border border-slate-600/40 hover:border-slate-500/50 transition-colors"
+              >
+                <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-slate-600/50 flex items-center justify-center">
+                  {award.icon}
+                </div>
+                <div className="min-w-0">
+                  <h4 className="font-semibold text-white text-sm md:text-base">{award.title}</h4>
+                  <p className="text-slate-400 text-sm mt-1">{award.description}</p>
+                </div>
+              </motion.div>
+            ))}
           </div>
         </motion.div>
         
         <motion.div
-          className="mt-16 bg-gradient-to-r from-primary/5 to-accent/5 rounded-xl p-8 shadow-md border border-gray-100"
+          className="mt-16 bg-gradient-to-r from-slate-800/60 to-slate-700/50 rounded-xl p-8 shadow-md border border-slate-600/50"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -188,40 +171,40 @@ const Achievements = () => {
         >
           <div className="flex items-center gap-3 mb-4">
             <FiTrendingUp size={24} className="text-primary" />
-            <h3 className="text-2xl font-bold">Academic Excellence</h3>
+            <h3 className="text-2xl font-bold text-white">Academic Excellence</h3>
           </div>
-          <p className="text-gray-600 mb-6">
+          <p className="text-slate-300 mb-6">
             Consistently ranked among the top performers throughout my academic career, with perfect or near-perfect scores in multiple standardized tests, highlighting my dedication to excellence and deep understanding of technical subjects.
           </p>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="bg-white p-4 rounded-lg shadow-sm flex items-center">
-              <div className="w-12 h-12 rounded-full bg-blue-50 flex items-center justify-center mr-4">
+            <div className="bg-slate-800/50 p-4 rounded-lg shadow-sm flex items-center border border-slate-600/30">
+              <div className="w-12 h-12 rounded-full bg-blue-500/20 flex items-center justify-center mr-4">
                 <FiStar className="text-blue-500" />
               </div>
               <div>
-                <h4 className="font-bold">Mathematical Aptitude</h4>
-                <p className="text-sm text-gray-500">Top-tier performance in mathematics competitions</p>
+                <h4 className="font-bold text-white">Mathematical Aptitude</h4>
+                <p className="text-sm text-slate-400">Top-tier performance in mathematics competitions</p>
               </div>
             </div>
             
-            <div className="bg-white p-4 rounded-lg shadow-sm flex items-center">
-              <div className="w-12 h-12 rounded-full bg-green-50 flex items-center justify-center mr-4">
+            <div className="bg-slate-800/50 p-4 rounded-lg shadow-sm flex items-center border border-slate-600/30">
+              <div className="w-12 h-12 rounded-full bg-green-500/20 flex items-center justify-center mr-4">
                 <FiBookOpen className="text-green-500" />
               </div>
               <div>
-                <h4 className="font-bold">Engineering Knowledge</h4>
-                <p className="text-sm text-gray-500">Elite performance in engineering entrance exams</p>
+                <h4 className="font-bold text-white">Engineering Knowledge</h4>
+                <p className="text-sm text-slate-400">Elite performance in engineering entrance exams</p>
               </div>
             </div>
             
-            <div className="bg-white p-4 rounded-lg shadow-sm flex items-center">
-              <div className="w-12 h-12 rounded-full bg-purple-50 flex items-center justify-center mr-4">
+            <div className="bg-slate-800/50 p-4 rounded-lg shadow-sm flex items-center border border-slate-600/30">
+              <div className="w-12 h-12 rounded-full bg-purple-500/20 flex items-center justify-center mr-4">
                 <FiTrophyIcon className="text-purple-500" />
               </div>
               <div>
-                <h4 className="font-bold">Consistent Excellence</h4>
-                <p className="text-sm text-gray-500">5-year record of outstanding academic achievement</p>
+                <h4 className="font-bold text-white">Consistent Excellence</h4>
+                <p className="text-sm text-slate-400">5-year record of outstanding academic achievement</p>
               </div>
             </div>
           </div>

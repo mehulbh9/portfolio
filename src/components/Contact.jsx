@@ -36,26 +36,29 @@ const Contact = () => {
   }
   
   return (
-    <section className="section" id="contact">
+    <section className="section bg-gradient-to-b from-slate-900 via-slate-800 to-cyan-950/20" id="contact">
       <div className="container">
-        <motion.h2 
-          className="section-title"
-          initial={{ opacity: 0, y: -20 }}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
+          transition={{ duration: 0.6 }}
         >
-          Get In Touch
-        </motion.h2>
+          <p className="section-label text-primary">Let's connect</p>
+          <h2 className="section-title text-left">
+            Get In Touch
+          </h2>
+        </motion.div>
         
-        <div className="grid md:grid-cols-2 gap-12 mt-12">
+        <div className="grid md:grid-cols-2 gap-8 md:gap-12 mt-12">
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
+            className="bg-slate-800/60 backdrop-blur-sm rounded-2xl p-6 md:p-8 shadow-lg border border-slate-600/50"
           >
-            <h3 className="text-2xl font-bold mb-6">Contact Information</h3>
+            <h3 className="text-xl md:text-2xl font-bold mb-6">Contact Information</h3>
             
             <div className="space-y-6">
               <div className="flex items-start">
@@ -63,8 +66,8 @@ const Contact = () => {
                   <FiMail size={20} />
                 </div>
                 <div>
-                  <h4 className="font-medium mb-1">Email</h4>
-                  <a href="mailto:mehulbh9@gmail.com" className="text-gray-600 hover:text-primary transition-colors">
+                  <h4 className="font-medium mb-1 text-white">Email</h4>
+                  <a href="mailto:mehulbh9@gmail.com" className="text-slate-300 hover:text-primary transition-colors">
                     mehulbh9@gmail.com
                   </a>
                 </div>
@@ -85,8 +88,8 @@ const Contact = () => {
                   <FiPhone size={20} />
                 </div>
                 <div>
-                  <h4 className="font-medium mb-1">Phone</h4>
-                  <p className="text-gray-600">+1 437-989-1815</p>
+                  <h4 className="font-medium mb-1 text-white">Phone</h4>
+                  <p className="text-slate-300">+1 437-989-1815</p>
                 </div>
               </div>
             </div>
@@ -97,11 +100,12 @@ const Contact = () => {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
+            className="bg-slate-800/60 backdrop-blur-sm rounded-2xl p-6 md:p-8 shadow-lg border border-slate-600/50"
           >
-            <h3 className="text-2xl font-bold mb-6">Send Me a Message</h3>
+            <h3 className="text-xl md:text-2xl font-bold mb-6">Send Me a Message</h3>
             
             {submitMessage ? (
-              <div className="bg-green-50 text-green-800 p-4 rounded-lg mb-6">
+              <div className="bg-green-500/20 text-green-300 p-4 rounded-lg mb-6">
                 {submitMessage}
               </div>
             ) : (
@@ -114,20 +118,20 @@ const Contact = () => {
                     name="name"
                     value={formData.name}
                     onChange={handleChange}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-colors"
+                    className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all duration-200 bg-white/80"
                     required
                   />
                 </div>
                 
                 <div>
-                  <label htmlFor="email" className="block text-sm font-medium mb-1">Email</label>
+                  <label htmlFor="email" className="block text-sm font-medium mb-1 text-slate-300">Email</label>
                   <input
                     type="email"
                     id="email"
                     name="email"
                     value={formData.email}
                     onChange={handleChange}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-colors"
+                    className="w-full px-4 py-3 border border-slate-600 rounded-xl focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all duration-200 bg-slate-700/50 text-white placeholder-slate-500"
                     required
                   />
                 </div>
@@ -140,20 +144,20 @@ const Contact = () => {
                     name="subject"
                     value={formData.subject}
                     onChange={handleChange}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-colors"
+                    className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all duration-200 bg-white/80"
                     required
                   />
                 </div>
                 
                 <div>
-                  <label htmlFor="message" className="block text-sm font-medium mb-1">Message</label>
+                  <label htmlFor="message" className="block text-sm font-medium mb-1 text-slate-300">Message</label>
                   <textarea
                     id="message"
                     name="message"
                     value={formData.message}
                     onChange={handleChange}
                     rows="5"
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-colors resize-none"
+                    className="w-full px-4 py-3 border border-slate-600 rounded-xl focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all duration-200 resize-none bg-slate-700/50 text-white placeholder-slate-500"
                     required
                   ></textarea>
                 </div>
