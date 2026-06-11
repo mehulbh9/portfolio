@@ -164,13 +164,14 @@ const FIELD_NOTES = [
 ]
 
 // ─── Eye grid photos (no place names — subject captions only) ──────────────────
+// focus = where the autofocus reticle snaps (the subject the eye finds first)
 const EYE_GRID = [
-  { src: PHOTOS.ELEPHANTS,   alt: 'Elephant herd beneath a snow-capped peak',  caption: 'The Herd',       pos: '50% 60%' },
-  { src: PHOTOS.LIONESS,     alt: 'Lioness, direct eye contact at dusk',        caption: 'The Stare',      pos: '50% 30%' },
-  { src: PHOTOS.CHEETAH,     alt: 'Cheetah portrait against a dark background',  caption: 'The Portrait',   pos: '50% 40%' },
-  { src: PHOTOS.LEOPARD_ISO, alt: 'Colour-isolated leopard in dry grass',       caption: 'The Edit',       pos: '50% 50%' },
-  { src: PHOTOS.LEOPARD_CUB, alt: 'Leopard cub looking into the lens',          caption: 'The Patience',   pos: '50% 40%' },
-  { src: PHOTOS.ELK,         alt: 'Bull elk in velvet at golden hour',          caption: 'The Velvet',     pos: '50% 50%' },
+  { src: PHOTOS.ELEPHANTS,   alt: 'Elephant herd beneath a snow-capped peak',  caption: 'The Herd',     pos: '50% 60%', focus: { x: 42, y: 64 } },
+  { src: PHOTOS.LIONESS,     alt: 'Lioness, direct eye contact at dusk',        caption: 'The Stare',    pos: '50% 30%', focus: { x: 52, y: 38 } },
+  { src: PHOTOS.CHEETAH,     alt: 'Cheetah portrait against a dark background',  caption: 'The Portrait', pos: '50% 40%', focus: { x: 50, y: 42 } },
+  { src: PHOTOS.LEOPARD_ISO, alt: 'Colour-isolated leopard in dry grass',       caption: 'The Edit',     pos: '50% 50%', focus: { x: 55, y: 48 } },
+  { src: PHOTOS.LEOPARD_CUB, alt: 'Leopard cub looking into the lens',          caption: 'The Patience', pos: '50% 40%', focus: { x: 48, y: 44 } },
+  { src: PHOTOS.ELK,         alt: 'Bull elk in velvet at golden hour',          caption: 'The Velvet',   pos: '50% 50%', focus: { x: 46, y: 40 } },
 ]
 
 // ─── Styles ───────────────────────────────────────────────────────────────────
@@ -238,10 +239,16 @@ const css = `
     pointer-events: none;
   }
   @keyframes glowPulse { 0%,100% { opacity: 0.55; transform: translateX(-50%) scale(1); } 50% { opacity: 0.9; transform: translateX(-50%) scale(1.08); } }
-  /* drifting starfield */
-  .starfield { position: absolute; inset: 0; z-index: 1; pointer-events: none; }
-  .star { position: absolute; width: 2px; height: 2px; border-radius: 50%; background: rgba(242,235,217,0.8); animation: twinkle var(--tw, 4s) ease-in-out infinite; }
-  @keyframes twinkle { 0%,100% { opacity: 0.15; } 50% { opacity: 0.95; } }
+  /* canvas starfield (depth parallax + shooting stars) */
+  .starfield-canvas { position: absolute; inset: 0; z-index: 1; pointer-events: none; }
+  /* cursor lens — a warm spotlight you scan the dark with */
+  .hero-lens {
+    position: absolute; inset: 0; z-index: 1; pointer-events: none;
+    background: radial-gradient(circle 240px at var(--mx,50%) var(--my,40%),
+      rgba(232,168,74,0.22) 0%, rgba(196,136,46,0.10) 35%, transparent 60%);
+    mix-blend-mode: screen; opacity: 0; transition: opacity 0.5s ease;
+  }
+  .hero:hover .hero-lens { opacity: 1; }
 
   .hero-content { position: relative; z-index: 2; padding: 0 3rem 5rem; max-width: 920px; }
   .hero-eyebrow {
@@ -380,13 +387,37 @@ const css = `
   .eye-section { padding: 7rem 3rem; }
   .eye-inner { max-width: 1200px; margin: 0 auto; }
   .eye-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 3px; margin-top: 3rem; }
-  .eye-cell { position: relative; overflow: hidden; cursor: pointer; }
+  .eye-cell { position: relative; overflow: hidden; cursor: crosshair; }
   .eye-cell:nth-child(1), .eye-cell:nth-child(4) { aspect-ratio: 3/4; }
   .eye-cell:nth-child(2), .eye-cell:nth-child(5) { aspect-ratio: 4/3; }
   .eye-cell:nth-child(3), .eye-cell:nth-child(6) { aspect-ratio: 3/4; }
-  .eye-cell img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.7s cubic-bezier(0.25,0.46,0.45,0.94); }
-  .eye-cell:hover img { transform: scale(1.06); }
-  .eye-cell-caption { position: absolute; inset: 0; background: linear-gradient(to top, rgba(13,11,9,0.85) 0%, transparent 50%); display: flex; align-items: flex-end; padding: 1rem; opacity: 0; transition: opacity 0.3s; }
+  /* default: dimmed + slightly desaturated/soft — "before you notice it" */
+  .eye-cell img {
+    width: 100%; height: 100%; object-fit: cover; display: block;
+    filter: saturate(0.55) brightness(0.62) contrast(0.95);
+    transform: scale(1.03);
+    transition: filter 0.6s ease, transform 0.7s cubic-bezier(0.25,0.46,0.45,0.94);
+  }
+  /* hover: the eye locks on — sharpen, brighten, push in */
+  .eye-cell:hover img { filter: saturate(1.05) brightness(1) contrast(1.04); transform: scale(1.06); }
+  /* autofocus reticle that snaps to the subject */
+  .eye-reticle {
+    position: absolute; width: 64px; height: 64px; pointer-events: none;
+    left: var(--fx, 50%); top: var(--fy, 50%); transform: translate(-50%,-50%) scale(1.4);
+    opacity: 0; transition: opacity 0.35s ease, transform 0.45s cubic-bezier(0.16,1,0.3,1);
+    z-index: 3;
+  }
+  .eye-cell:hover .eye-reticle { opacity: 1; transform: translate(-50%,-50%) scale(1); }
+  .eye-reticle::before, .eye-reticle::after { content: ''; position: absolute; background: var(--amber2); box-shadow: 0 0 6px rgba(232,168,74,0.8); }
+  /* four corner brackets via box-shadow on a single frame */
+  .eye-reticle-frame { position: absolute; inset: 0; }
+  .eye-reticle-frame span { position: absolute; width: 14px; height: 14px; border: 1.5px solid var(--amber2); }
+  .eye-reticle-frame span:nth-child(1) { top: 0; left: 0; border-right: none; border-bottom: none; }
+  .eye-reticle-frame span:nth-child(2) { top: 0; right: 0; border-left: none; border-bottom: none; }
+  .eye-reticle-frame span:nth-child(3) { bottom: 0; left: 0; border-right: none; border-top: none; }
+  .eye-reticle-frame span:nth-child(4) { bottom: 0; right: 0; border-left: none; border-top: none; }
+  .eye-reticle-dot { position: absolute; left: 50%; top: 50%; width: 3px; height: 3px; border-radius: 50%; background: var(--amber2); transform: translate(-50%,-50%); box-shadow: 0 0 8px rgba(232,168,74,0.9); }
+  .eye-cell-caption { position: absolute; inset: 0; background: linear-gradient(to top, rgba(13,11,9,0.85) 0%, transparent 50%); display: flex; align-items: flex-end; padding: 1rem; opacity: 0; transition: opacity 0.3s; z-index: 2; }
   .eye-cell:hover .eye-cell-caption { opacity: 1; }
   .eye-cell-caption span { font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.15em; color: var(--text); text-transform: uppercase; }
   .eye-note { font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.12em; color: var(--muted); text-transform: uppercase; margin-top: 1.5rem; text-align: right; }
@@ -410,9 +441,26 @@ const css = `
   .footer { padding: 2.5rem 3rem; border-top: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.15em; color: var(--muted); text-transform: uppercase; }
   .footer-coords { opacity: 0.5; }
 
+  /* ── Film grain + vignette (shot-on-film texture) ── */
+  .grain {
+    position: fixed; inset: 0; z-index: 9998; pointer-events: none;
+    opacity: 0.05; mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    animation: grainShift 0.6s steps(2) infinite;
+  }
+  @keyframes grainShift { 0%{transform:translate(0,0)} 25%{transform:translate(-2%,1%)} 50%{transform:translate(1%,-2%)} 75%{transform:translate(2%,2%)} 100%{transform:translate(-1%,-1%)} }
+  .vignette { position: fixed; inset: 0; z-index: 9997; pointer-events: none; box-shadow: inset 0 0 220px 40px rgba(0,0,0,0.55); }
+
+  /* ── Count-up stat ── */
+  .countup { font-variant-numeric: tabular-nums; }
+
   /* ── Reveal animation ── */
   .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.7s ease, transform 0.7s ease; }
   .reveal.visible { opacity: 1; transform: translateY(0); }
+  /* staggered children inside a revealed row */
+  .reveal.stagger.visible > * { animation: fadeUp 0.7s cubic-bezier(0.16,1,0.3,1) both; }
+  .reveal.stagger.visible > *:nth-child(2) { animation-delay: 0.08s; }
+  .reveal.stagger.visible > *:nth-child(3) { animation-delay: 0.16s; }
 
   /* ── Mobile ── */
   @media (max-width: 768px) {
@@ -440,24 +488,159 @@ const css = `
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .hero-bg, .hero-video, .hero-glow, .star, .live-dot, .hero-scroll-line { animation: none !important; }
+    .hero-bg, .hero-video, .hero-glow, .live-dot, .hero-scroll-line, .grain { animation: none !important; }
     .hero-headline .line > span, .hero-sub, .hero-meta { animation: none !important; }
+    .hero-lens { display: none; }
   }
 `
 
-// pre-computed starfield positions
-const STARS = Array.from({ length: 42 }, (_, i) => ({
-  left: `${(i * 37) % 100}%`,
-  top: `${(i * 53) % 100}%`,
-  tw: `${3 + (i % 5)}s`,
-  delay: `${(i % 7) * 0.4}s`,
-  size: i % 4 === 0 ? 3 : 2,
-}))
+const prefersReducedMotion = () =>
+  typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
+// ─── Hero starfield (canvas: depth parallax + twinkle + shooting stars) ───────
+function HeroCanvas() {
+  const canvasRef = useRef(null)
+  const mouse = useRef({ x: 0.5, y: 0.4 })
+
+  useEffect(() => {
+    const canvas = canvasRef.current
+    if (!canvas) return
+    const ctx = canvas.getContext('2d')
+    const reduce = prefersReducedMotion()
+    let w = 0, h = 0, dpr = Math.min(window.devicePixelRatio || 1, 2)
+    let stars = [], shooting = null, raf = 0, t = 0
+
+    const resize = () => {
+      w = canvas.clientWidth; h = canvas.clientHeight
+      canvas.width = w * dpr; canvas.height = h * dpr
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
+      const count = Math.min(180, Math.floor((w * h) / 7000))
+      stars = Array.from({ length: count }, () => {
+        const z = Math.random()                 // depth 0..1 (1 = closest)
+        return {
+          x: Math.random() * w, y: Math.random() * h, z,
+          r: z * 1.6 + 0.3,
+          base: 0.25 + z * 0.55,
+          phase: Math.random() * Math.PI * 2,
+          tw: 0.6 + Math.random() * 1.6,
+        }
+      })
+    }
+
+    const spawnShooting = () => {
+      const startX = Math.random() * w * 0.7
+      const startY = Math.random() * h * 0.4
+      shooting = { x: startX, y: startY, vx: 5 + Math.random() * 4, vy: 2 + Math.random() * 2, life: 1 }
+    }
+
+    const draw = () => {
+      ctx.clearRect(0, 0, w, h)
+      const mx = (mouse.current.x - 0.5)
+      const my = (mouse.current.y - 0.5)
+      for (const s of stars) {
+        const px = s.x + mx * s.z * 38
+        const py = s.y + my * s.z * 38
+        const a = reduce ? s.base : s.base + Math.sin(t * s.tw + s.phase) * 0.35
+        ctx.beginPath()
+        ctx.arc(px, py, s.r, 0, Math.PI * 2)
+        ctx.fillStyle = `rgba(242,235,217,${Math.max(0, Math.min(1, a))})`
+        ctx.fill()
+      }
+      if (shooting) {
+        const len = 90
+        const tailX = shooting.x - shooting.vx * 8
+        const tailY = shooting.y - shooting.vy * 8
+        const grad = ctx.createLinearGradient(shooting.x, shooting.y, tailX, tailY)
+        grad.addColorStop(0, `rgba(232,168,74,${0.9 * shooting.life})`)
+        grad.addColorStop(1, 'rgba(232,168,74,0)')
+        ctx.strokeStyle = grad
+        ctx.lineWidth = 2
+        ctx.beginPath()
+        ctx.moveTo(shooting.x, shooting.y)
+        ctx.lineTo(tailX, tailY)
+        ctx.stroke()
+        shooting.x += shooting.vx; shooting.y += shooting.vy; shooting.life -= 0.012
+        if (shooting.life <= 0 || shooting.x > w + len || shooting.y > h + len) shooting = null
+      } else if (!reduce && Math.random() < 0.004) {
+        spawnShooting()
+      }
+      t += 0.016
+      raf = requestAnimationFrame(draw)
+    }
+
+    const onMove = (e) => { mouse.current = { x: e.clientX / window.innerWidth, y: e.clientY / window.innerHeight } }
+
+    resize()
+    window.addEventListener('resize', resize)
+    window.addEventListener('mousemove', onMove)
+    if (reduce) { draw(); cancelAnimationFrame(raf) } else { draw() }
+    return () => { cancelAnimationFrame(raf); window.removeEventListener('resize', resize); window.removeEventListener('mousemove', onMove) }
+  }, [])
+
+  return <canvas ref={canvasRef} className="starfield-canvas" />
+}
+
+// ─── Headline decode/scramble (resolves from mono glyphs once on mount) ───────
+const GLYPHS = '█▓▒░<>/\\{}[]=+*#@01'
+function useScramble(text, speed = 28) {
+  const [out, setOut] = useState(text)
+  useEffect(() => {
+    if (prefersReducedMotion()) { setOut(text); return }
+    let frame = 0
+    const total = text.length
+    const id = setInterval(() => {
+      frame++
+      const resolved = Math.floor(frame / 2)
+      let s = ''
+      for (let i = 0; i < total; i++) {
+        if (text[i] === ' ') { s += ' '; continue }
+        s += i < resolved ? text[i] : GLYPHS[Math.floor(Math.random() * GLYPHS.length)]
+      }
+      setOut(s)
+      if (resolved >= total) clearInterval(id)
+    }, speed)
+    return () => clearInterval(id)
+  }, [text, speed])
+  return out
+}
+
+// ─── Count-up number (animates leading digits when scrolled into view) ────────
+function CountUp({ value }) {
+  const ref = useRef(null)
+  const [display, setDisplay] = useState(value)
+  useEffect(() => {
+    const m = /^(\d+)(.*)$/.exec(value)
+    if (!m || prefersReducedMotion()) { setDisplay(value); return }
+    const target = parseInt(m[1], 10)
+    const suffix = m[2]
+    const el = ref.current
+    if (!el) return
+    let started = false
+    const run = () => {
+      const dur = 1100, start = performance.now()
+      const tick = (now) => {
+        const p = Math.min(1, (now - start) / dur)
+        const eased = 1 - Math.pow(1 - p, 3)
+        setDisplay(Math.round(target * eased) + suffix)
+        if (p < 1) requestAnimationFrame(tick)
+      }
+      requestAnimationFrame(tick)
+    }
+    const obs = new IntersectionObserver((es) => {
+      es.forEach(e => { if (e.isIntersecting && !started) { started = true; run() } })
+    }, { threshold: 0.6 })
+    obs.observe(el)
+    return () => obs.disconnect()
+  }, [value])
+  return <span ref={ref} className="countup">{display}</span>
+}
 
 // ─── Component ────────────────────────────────────────────────────────────────
 export default function MehulPortfolioV3() {
   const [openDoor, setOpenDoor] = useState(null)
   const revealRefs = useRef([])
+  const heroRef = useRef(null)
+  const headline = useScramble('others miss.')
 
   useEffect(() => {
     const obs = new IntersectionObserver(
@@ -470,10 +653,19 @@ export default function MehulPortfolioV3() {
 
   const addReveal = (el) => { if (el && !revealRefs.current.includes(el)) revealRefs.current.push(el) }
   const toggleDoor = (id) => setOpenDoor(prev => prev === id ? null : id)
+  const onHeroMove = (e) => {
+    const el = heroRef.current
+    if (!el) return
+    const r = el.getBoundingClientRect()
+    el.style.setProperty('--mx', `${((e.clientX - r.left) / r.width) * 100}%`)
+    el.style.setProperty('--my', `${((e.clientY - r.top) / r.height) * 100}%`)
+  }
 
   return (
     <>
       <style>{css}</style>
+      <div className="grain" />
+      <div className="vignette" />
 
       {/* ── Nav ── */}
       <nav className="nav">
@@ -488,7 +680,7 @@ export default function MehulPortfolioV3() {
       </nav>
 
       {/* ── Hero ── */}
-      <div className="hero">
+      <div className="hero" ref={heroRef} onMouseMove={onHeroMove}>
         {HERO_VIDEO ? (
           <video className="hero-video" autoPlay muted loop playsInline poster={PHOTOS.MILKY_WAY}>
             <source src={HERO_VIDEO} type="video/mp4" />
@@ -496,11 +688,8 @@ export default function MehulPortfolioV3() {
         ) : (
           <div className="hero-bg" style={{ backgroundImage: `url(${PHOTOS.MILKY_WAY})` }} />
         )}
-        <div className="starfield">
-          {STARS.map((s, i) => (
-            <span key={i} className="star" style={{ left: s.left, top: s.top, width: s.size, height: s.size, ['--tw']: s.tw, animationDelay: s.delay }} />
-          ))}
-        </div>
+        <HeroCanvas />
+        <div className="hero-lens" />
         <div className="hero-glow" />
         <div className="hero-overlay" />
 
@@ -510,7 +699,7 @@ export default function MehulPortfolioV3() {
           </div>
           <h1 className="hero-headline">
             <span className="line"><span>I notice things</span></span>
-            <span className="line"><span><em>others miss.</em></span></span>
+            <span className="line"><span><em>{headline}</em></span></span>
           </h1>
           <p className="hero-sub">
             <strong>Data Analyst at AMD</strong> — automation, ML, and program analytics.
@@ -559,7 +748,7 @@ export default function MehulPortfolioV3() {
                   <div className="wardrobe-door-body">{door.body}</div>
                   <div className="wardrobe-door-stats">
                     {door.stats.map((s, i) => (
-                      <div key={i}><span className="wardrobe-stat-val">{s.value}</span><span className="wardrobe-stat-label">{s.label}</span></div>
+                      <div key={i}><span className="wardrobe-stat-val"><CountUp value={s.value} /></span><span className="wardrobe-stat-label">{s.label}</span></div>
                     ))}
                   </div>
                 </div>
@@ -672,6 +861,10 @@ export default function MehulPortfolioV3() {
             {EYE_GRID.map((photo, i) => (
               <div className="eye-cell" key={i}>
                 <img src={photo.src} alt={photo.alt} style={{ objectPosition: photo.pos }} />
+                <div className="eye-reticle" style={{ ['--fx']: `${photo.focus.x}%`, ['--fy']: `${photo.focus.y}%` }}>
+                  <div className="eye-reticle-frame"><span /><span /><span /><span /></div>
+                  <div className="eye-reticle-dot" />
+                </div>
                 <div className="eye-cell-caption"><span>{photo.caption}</span></div>
               </div>
             ))}
